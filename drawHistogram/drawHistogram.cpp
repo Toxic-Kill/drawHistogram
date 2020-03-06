@@ -1,20 +1,25 @@
-﻿// drawHistogram.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
+﻿#include <iostream>
+#include<opencv2/opencv.hpp>
 
-#include <iostream>
+using namespace std;
+using namespace cv;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	cv::Mat src_Mat = cv::imread("D:\\Files\\2.jpg");//读取文件
+	float histgram[256] = { 0 };//建立容量为256的数组，并初始化为0
+	int height = src_Mat.rows;
+	int width = src_Mat.cols;
+	for (int i = 0; i < height; i++)//遍历像素
+	{
+		for (int j = 0; j < width; j++)
+		{
+			int greyValue = (src_Mat.at<Vec3b>(i, j)[0] * 0.1140 + src_Mat.at<Vec3b>(i, j)[1] * 0.5870 + src_Mat.at<Vec3b>(i, j)[2] * 0.2989);//计算灰度值
+			histgram[greyValue]++;//写入数组中计数
+		}
+	}
+	for (int m = 0; m < 256; m++)
+	{
+		histgram[m] = histgram[m] / 256;//计算各灰度出现概率
+	}
 }
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
